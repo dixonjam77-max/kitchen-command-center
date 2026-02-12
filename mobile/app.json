@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Kitchen Command Center",
+    "slug": "kitchen-command-center",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "kcc",
+    "splash": {
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kcc.kitchencommandcenter",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Kitchen Command Center uses the camera to scan barcodes, receipts, and recipe photos.",
+        "NSPhotoLibraryUsageDescription": "Kitchen Command Center uses your photo library to import recipe images and receipts."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.kcc.kitchencommandcenter",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-camera",
+      "expo-notifications",
+      [
+        "expo-barcode-scanner",
+        { "cameraPermission": "Allow Kitchen Command Center to scan barcodes." }
+      ]
+    ]
+  }
+}

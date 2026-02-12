@@ -1,0 +1,48 @@
+{
+  "name": "Kitchen Command Center",
+  "short_name": "KCC",
+  "description": "Manage your kitchen inventory, recipes, meal plans, and grocery lists",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563EB",
+  "orientation": "any",
+  "categories": ["food", "lifestyle", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Pantry",
+      "url": "/pantry",
+      "description": "View your pantry inventory"
+    },
+    {
+      "name": "Recipes",
+      "url": "/recipes",
+      "description": "Browse your recipe collection"
+    },
+    {
+      "name": "Grocery List",
+      "url": "/grocery",
+      "description": "View your grocery lists"
+    },
+    {
+      "name": "Meal Plan",
+      "url": "/meal-plan",
+      "description": "View your meal plan"
+    }
+  ]
+}
