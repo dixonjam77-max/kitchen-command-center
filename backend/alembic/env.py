@@ -12,13 +12,20 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 settings = get_settings()
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+
+# Normalize DATABASE_URL: ensure we use psycopg v3 driver (not psycopg2)
+_db_url = settings.DATABASE_URL
+if _db_url.startswith("postgresql://"):
+    _db_url = _db_url.replace("postgresql://", "postgresql+psycopg://", 1)
+elif _db_url.startswith("postgres://"):
+    _db_url = _db_url.replace("postgres://", "postgresql+psycopg://", 1)
+
+config.set_main_option("sqlalchemy.url", _db_url)
 
 target_metadata = Base.metadata
 
 # Build SSL connect_args for cloud providers (same logic as database.py)
 _connect_args: dict = {}
-_db_url = settings.DATABASE_URL
 if "supabase" in _db_url or "neon.tech" in _db_url or "sslmode=require" in _db_url:
     import ssl as _ssl
     _ssl_ctx = _ssl.create_default_context()
@@ -36,7 +43,7 @@ def run_migrations_offline():
 
 def run_migrations_online():
     connectable = create_engine(
-        settings.DATABASE_URL,
+        _db_url,
         poolclass=pool.NullPool,
         connect_args=_connect_args,
     )

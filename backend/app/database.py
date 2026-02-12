@@ -9,9 +9,15 @@ from app.config import get_settings
 
 settings = get_settings()
 
+# Normalize DATABASE_URL: ensure we use psycopg v3 driver (not psycopg2)
+_db_url = settings.DATABASE_URL
+if _db_url.startswith("postgresql://"):
+    _db_url = _db_url.replace("postgresql://", "postgresql+psycopg://", 1)
+elif _db_url.startswith("postgres://"):
+    _db_url = _db_url.replace("postgres://", "postgresql+psycopg://", 1)
+
 # Cloud Postgres providers (Supabase, Neon) require SSL connections
 _connect_args: dict = {}
-_db_url = settings.DATABASE_URL
 if "supabase" in _db_url or "neon.tech" in _db_url or "sslmode=require" in _db_url:
     import ssl as _ssl
     _ssl_ctx = _ssl.create_default_context()
