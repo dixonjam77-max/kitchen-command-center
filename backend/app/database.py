@@ -16,16 +16,13 @@ if _db_url.startswith("postgresql://"):
 elif _db_url.startswith("postgres://"):
     _db_url = _db_url.replace("postgres://", "postgresql+psycopg://", 1)
 
-# Cloud Postgres providers (Supabase, Neon) require SSL connections
-_connect_args: dict = {}
-if "supabase" in _db_url or "neon.tech" in _db_url or "sslmode=require" in _db_url:
-    import ssl as _ssl
-    _ssl_ctx = _ssl.create_default_context()
-    _ssl_ctx.check_hostname = False
-    _ssl_ctx.verify_mode = _ssl.CERT_NONE
-    _connect_args["ssl"] = _ssl_ctx
+# Cloud Postgres providers (Supabase, Neon) require SSL connections.
+# For psycopg v3, SSL is configured via the connection URL, not connect_args.
+_is_cloud = "supabase" in _db_url or "neon.tech" in _db_url or "pooler" in _db_url
+if _is_cloud and "sslmode" not in _db_url:
+    _db_url += ("&" if "?" in _db_url else "?") + "sslmode=require"
 
-engine = create_engine(_db_url, connect_args=_connect_args)
+engine = create_engine(_db_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
